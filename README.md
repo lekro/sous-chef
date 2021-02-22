@@ -16,7 +16,7 @@ Feel free to make changes if it doesn't work for you!*
 - Do the [usual bot setup](https://discordpy.readthedocs.io/en/latest/discord.html)
 - Prepare a virtualenv: `python3 -m venv venv`
 - Activate it: `. venv/bin/activate`
-- Install required dependencies: `pip3 install discord.py[voice] sounddevice yaml`
+- Install required dependencies: `pip3 install discord.py[voice] sounddevice yaml numpy scipy`
 - Put token in `config.yml`, following example
 - Run with `python3 -m sous_chef`
 
