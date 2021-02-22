@@ -30,6 +30,7 @@ class Voice(commands.Cog):
         blocksize = int(self.stream.samplerate) // 50
         target_samplerate = 48000
         target_blocksize = 48000 // 50
+
         self.stream.start()
 
         # This is implemented in a very simple way. We maintain a rolling window
@@ -41,23 +42,23 @@ class Voice(commands.Cog):
         class SousAudio(discord.AudioSource):
             def __init__(self, cog):
                 self.cog = cog
-                self.window = np.zeros((blocksize * 3, 2), dtype='int16') # buffer
+                self.buffer = np.zeros((blocksize * 3, 2), dtype='int16') # buffer
 
             def is_opus(self):
                 return False
 
             def read(self):
                 # Move the buffers over
-                self.window[:2*blocksize] = self.window[blocksize:]
+                self.buffer[:2*blocksize] = self.buffer[blocksize:]
 
                 # Read into last part of window
-                self.window[2*blocksize:, ...], overflow = self.cog.stream.read(blocksize)
+                self.buffer[2*blocksize:, ...], overflow = self.cog.stream.read(blocksize)
 
                 # Resample to 48 kHz sampling rate
-                rs_window = resample(self.window, target_blocksize * 3).astype('int16')
+                rs_buffer = resample(self.buffer, target_blocksize * 3).astype('int16')
 
                 # Output the middle part of the buffer
-                return rs_window[target_blocksize:2*target_blocksize].tobytes()
+                return rs_buffer[target_blocksize:2*target_blocksize].tobytes()
         
         voice_client.play(SousAudio(self))
 
