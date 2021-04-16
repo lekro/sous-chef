@@ -20,3 +20,15 @@ Feel free to make changes if it doesn't work for you!*
 - Put token in `config.yml`, following example
 - Run with `python3 -m sous_chef`
 
+## Usage for me
+
+My audio is basically managed by [JACK](https://jackaudio.org/),
+so I simply run `pacmd load-module module-jack-sink`, point Dolphin to the
+new JACK sink and route it in JACK to "system". In pavucontrol, I assign
+"Monitor of Jack Sink-01" to the sous-chef audio stream.
+
+In this way, any pulseaudio or JACK stream can be routed (possibly using
+module-jack-source) into sous-chef.
+
+As usual, your mileage may vary. If using plain pulseaudio, you could probably
+achieve the same thing using a null sink and loopback device.
